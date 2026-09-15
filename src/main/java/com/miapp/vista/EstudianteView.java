@@ -27,6 +27,12 @@ public class EstudianteView extends JFrame {
     private DefaultTableModel      modeloTabla;
     private JLabel                 lblEstado;
 
+    // ── Mi Interfaz ────────────────────────────────────────────────────────
+    private JTextField            txtNombre1;
+    private JTextField            txtCarrera;
+    private JTextField            txtPromedio;
+    private JButton               btnAgregar;  
+    
     // ── Controlador ───────────────────────────────────────────────────────────
     private EstudianteController controlador;
 
@@ -83,17 +89,33 @@ public class EstudianteView extends JFrame {
         add(panelBusqueda, BorderLayout.NORTH);
         add(scroll,        BorderLayout.CENTER);
         add(lblEstado,     BorderLayout.SOUTH);
+        
+        //Mi Interfaz        
+        btnAgregar = new JButton("Agregar");
+        btnAgregar.setBackground(new Color(59, 139, 212));
+        btnAgregar.setForeground(Color.WHITE);
+        btnAgregar.setFocusPainted(false);
     }
 
     // ── Eventos ───────────────────────────────────────────────────────────────
 
     private void initEventos() {
+        btnAgregar.addActionListener((ActionEvent e1) -> {
+        if (controlador != null) {
+                //Aqui debes crear la funcion para agregar estudiantes
+                //controlador.agregarEstudiante(txtNombre1.getText().trim());
+            }
+    });
+        
         btnBuscar.addActionListener((ActionEvent e) -> {
             if (controlador != null) {
                 controlador.buscarEstudiante(txtNombre.getText().trim());
             }
         });
 
+        //Mi Interfaz
+        txtNombre1.addActionListener((ActionEvent e1) -> btnAgregar.doClick());
+        
         // También buscar al presionar Enter en el campo de texto
         txtNombre.addActionListener((ActionEvent e) -> btnBuscar.doClick());
     }
