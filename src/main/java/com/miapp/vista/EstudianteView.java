@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
+//Fernando Jose Marrugo Arnedo
 /**
  * Vista: JFrame principal del módulo Estudiante.
  * Contiene un campo de búsqueda y una tabla de resultados.
@@ -18,7 +19,7 @@ import java.util.List;
  * del Modelo y toda la comunicación pasa por el Controlador.
  */
 public class EstudianteView extends JFrame {
-
+    
     // ── Componentes UI ────────────────────────────────────────────────────────
     private JTextField             txtNombre;
     private JButton                btnBuscar;
