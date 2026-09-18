@@ -22,7 +22,8 @@ public class EstudianteController {
     private EstudianteView vista;
 
     // ── Array de estudiantes (fuente de datos) ────────────────────────────────
-    private Estudiante[] estudiantes;
+    private List<Estudiante> estudiantes; //Convertimos el arreglo asi para poder agregar Estudiantes
+    private int idContador = 1; //Creamos esta variable para asignarle id a cada estudiante
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
@@ -39,22 +40,53 @@ public class EstudianteController {
      * En un proyecto real este array vendría de una base de datos o servicio.
      */
     private void cargarDatos() {
-        estudiantes = new Estudiante[] {
-            new Estudiante(1,  "Ana García",        "Ingeniería de Sistemas",  4.5),
-            new Estudiante(2,  "Carlos López",      "Ingeniería Civil",        3.8),
-            new Estudiante(3,  "María Rodríguez",   "Medicina",                4.9),
-            new Estudiante(4,  "José Martínez",     "Derecho",                 3.5),
-            new Estudiante(5,  "Laura Sánchez",     "Administración",          4.1),
-            new Estudiante(6,  "Andrés Torres",     "Ingeniería de Sistemas",  3.9),
-            new Estudiante(7,  "Valentina Gómez",   "Psicología",              4.3),
-            new Estudiante(8,  "Luis Herrera",      "Economía",                3.7),
-            new Estudiante(9,  "Sofía Díaz",        "Ingeniería Civil",        4.6),
-            new Estudiante(10, "Juliana Morales",   "Medicina",                4.8),
-            new Estudiante(11, "Ana Milena Ruiz",   "Derecho",                 4.0),
-            new Estudiante(12, "Carlos Andrés Paz", "Administración",          3.6)
-        };
+        estudiantes = new ArrayList<>();
+        
+        estudiantes.add(new Estudiante(idContador++, "Ana García",         "Ingeniería de Sistemas", 4.5));
+        estudiantes.add(new Estudiante(idContador++, "Carlos López",       "Ingeniería Civil",        3.8));
+        estudiantes.add(new Estudiante(idContador++, "María Rodríguez",    "Medicina",                4.9));
+        estudiantes.add(new Estudiante(idContador++, "José Martínez",      "Derecho",                 3.5));
+        estudiantes.add(new Estudiante(idContador++, "Laura Sánchez",      "Administración",          4.1));
+        estudiantes.add(new Estudiante(idContador++, "Andrés Torres",      "Ingeniería de Sistemas", 3.9));
+        estudiantes.add(new Estudiante(idContador++, "Valentina Gómez",    "Psicología",              4.3));
+        estudiantes.add(new Estudiante(idContador++, "Luis Herrera",       "Economía",                3.7));
+        estudiantes.add(new Estudiante(idContador++, "Sofía Díaz",         "Ingeniería Civil",        4.6));
+        estudiantes.add(new Estudiante(idContador++, "Juliana Morales",    "Medicina",                4.8));
+        estudiantes.add(new Estudiante(idContador++, "Ana Milena Ruiz",    "Derecho",                 4.0));
+        estudiantes.add(new Estudiante(idContador++, "Carlos Andrés Paz",  "Administración",          3.6));
     }
 
+    //Agregando metodos del panelAgregar
+    public void agregarEstudiante(String nombre, String carrera, String promedioStr){
+        if(nombre.isEmpty()){
+            vista.mostrarError("El nombre del estudiante no puede estar vacío");
+            return;
+        }
+        
+        if(carrera.isEmpty()){
+            vista.mostrarError("La carrera no puede estar vacía");
+            return;
+        }
+        
+        double promedio = 0.0;
+        
+        try{
+            promedio = Double.parseDouble(promedioStr);
+        }catch(NumberFormatException error){
+            vista.mostrarError("El promedio debe ser un numero decimal válido, ejemplo 4.5");
+            return;
+        }
+        
+        if(promedio < 0.0 || promedio > 5.0){
+            vista.mostrarError("El promedio debe ser un numero entre 0.0 y 5.0");
+        }
+        
+        //Aqui se crea el nuevo estudiante y se agrega al arreglo ya creado
+        Estudiante nuevoEstudiante = new Estudiante(idContador++, nombre, carrera, promedio);        
+        estudiantes.add(nuevoEstudiante);
+        
+        vista.mostrarConfirmacion("Estudiante agregado con exito!");
+    }
     // ── Lógica de búsqueda ────────────────────────────────────────────────────
 
     /**

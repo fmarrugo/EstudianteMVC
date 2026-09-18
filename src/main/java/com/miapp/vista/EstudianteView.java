@@ -59,7 +59,7 @@ public class EstudianteView extends JFrame {
         JLabel lblNombre = new JLabel("Nombre:");
         txtNombre = new JTextField(25);
         btnBuscar = new JButton("Buscar");
-        btnBuscar.setBackground(new Color(59, 139, 212));
+        btnBuscar.setBackground(new Color(44, 227, 230));
         btnBuscar.setForeground(Color.WHITE);
         btnBuscar.setFocusPainted(false);
 
@@ -129,7 +129,11 @@ public class EstudianteView extends JFrame {
         btnAgregar.addActionListener((ActionEvent e1) -> {
         if (controlador != null) {
                 //Aqui debes crear la funcion para agregar estudiantes
-                //controlador.agregarEstudiante(txtNombre1.getText().trim());
+                controlador.agregarEstudiante(
+                    txtNombre1.getText().trim(),
+                    txtCarrera.getText().trim(),
+                    txtPromedio.getText().trim()
+                );
             }
     });
         
@@ -145,7 +149,14 @@ public class EstudianteView extends JFrame {
         // También buscar al presionar Enter en el campo de texto
         txtNombre.addActionListener((ActionEvent e) -> btnBuscar.doClick());
     }
-
+    
+    //Funcion de limpieza
+    public void limpiarCamposAgregar(){
+        txtNombre1.setText("");
+        txtCarrera.setText("");
+        txtPromedio.setText("");
+    }
+    
     // ── Métodos públicos que llama el Controlador ─────────────────────────────
     // ninguno de estos métodos recibe un Estudiante: reciben
     // Object[] / List<Object[]> ya armados, que es lo único que la Vista
@@ -160,7 +171,15 @@ public class EstudianteView extends JFrame {
         agregarFila(fila);
         setEstado("Se encontró 1 estudiante.");
     }
-
+    
+    public void mostrarConfirmacion(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+        setEstado("Error: " + mensaje);
+    }
     /**
      * Muestra varias filas en la tabla.
      * @param filas lista de arreglos {id, nombre, carrera, promedioFormateado}
@@ -175,14 +194,6 @@ public class EstudianteView extends JFrame {
             agregarFila(fila);
         }
         setEstado("Se encontraron " + filas.size() + " estudiante(s).");
-    }
-
-    /**
-     * Muestra un mensaje de error en la barra de estado.
-     */
-    public void mostrarError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
-        setEstado("Error: " + mensaje);
     }
 
     /**
