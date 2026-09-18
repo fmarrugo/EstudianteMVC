@@ -33,6 +33,10 @@ public class EstudianteView extends JFrame {
     private JTextField            txtPromedio;
     private JButton               btnAgregar;  
     
+    //Interfaz de orden
+    private JComboBox<String>       criterio;
+    private JButton                 btnOrdenar;
+    
     // ── Controlador ───────────────────────────────────────────────────────────
     private EstudianteController controlador;
 
@@ -67,7 +71,7 @@ public class EstudianteView extends JFrame {
         panelBusqueda.add(txtNombre);
         panelBusqueda.add(btnBuscar);
         
-        //Mi Interfaz   
+        //Mi Interfaz (agregar)  
         JPanel panelAgregar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         panelAgregar.setBorder(BorderFactory.createTitledBorder("Agregar estudiante"));
         
@@ -91,14 +95,30 @@ public class EstudianteView extends JFrame {
         panelAgregar.add(txtPromedio);
         panelAgregar.add(btnAgregar);
         
+        //Mi interfaz(ordenar)
+        JPanel panelOrdenar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        panelOrdenar.setBorder(BorderFactory.createTitledBorder("Ordenar resultados"));
+        
+        panelOrdenar.add(new JLabel("Crieterio:"));
+        criterio = new JComboBox<>(new String[]{"Nombre", "Promedio"});
+        panelOrdenar.add(criterio);
+        
+        btnOrdenar = new JButton("Ordenar");
+        btnOrdenar.setBackground(new Color(44, 227, 230));
+        btnOrdenar.setForeground(Color.WHITE);
+        btnOrdenar.setFocusPainted(false);
+        panelOrdenar.add(btnOrdenar);
+        
         // Panel central — tabla de resultados //Modificado
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
         panelBusqueda.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelAgregar.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelOrdenar.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         panelPrincipal.add(panelBusqueda);
         panelPrincipal.add(panelAgregar);
+        panelPrincipal.add(panelOrdenar);
         
         String[] columnas = {"ID", "Nombre", "Carrera", "Promedio"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
@@ -140,6 +160,13 @@ public class EstudianteView extends JFrame {
         btnBuscar.addActionListener((ActionEvent e) -> {
             if (controlador != null) {
                 controlador.buscarEstudiante(txtNombre.getText().trim());
+            }
+        });
+        
+        btnOrdenar.addActionListener((ActionEvent e) -> {
+            if (controlador != null) {
+                String criterioSeleccionado = (String) criterio.getSelectedItem();
+                controlador.ordenarPor(criterioSeleccionado);
             }
         });
 

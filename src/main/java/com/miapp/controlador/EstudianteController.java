@@ -4,6 +4,8 @@ import com.miapp.modelo.Estudiante;
 import com.miapp.vista.EstudianteView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -24,7 +26,8 @@ public class EstudianteController {
     // ── Array de estudiantes (fuente de datos) ────────────────────────────────
     private List<Estudiante> estudiantes; //Convertimos el arreglo asi para poder agregar Estudiantes
     private int idContador = 1; //Creamos esta variable para asignarle id a cada estudiante
-
+    private List<Estudiante> ultimosResultados;
+    private boolean ascendente = true;
     // ── Constructor ───────────────────────────────────────────────────────────
 
     public EstudianteController(EstudianteView vista) {
@@ -79,6 +82,7 @@ public class EstudianteController {
         
         if(promedio < 0.0 || promedio > 5.0){
             vista.mostrarError("El promedio debe ser un numero entre 0.0 y 5.0");
+            return;
         }
         
         //Aqui se crea el nuevo estudiante y se agrega al arreglo ya creado
@@ -86,6 +90,10 @@ public class EstudianteController {
         estudiantes.add(nuevoEstudiante);
         
         vista.mostrarConfirmacion("Estudiante agregado con exito!");
+        vista.limpiarCamposAgregar();
+        
+        ultimosResultados = new ArrayList<>(estudiantes);
+        vista.mostrarEstudiantes(convertirAFilas(ultimosResultados));
     }
     // ── Lógica de búsqueda ────────────────────────────────────────────────────
 
@@ -112,7 +120,9 @@ public class EstudianteController {
                 resultados.add(e);
             }
         }
-
+            
+        ultimosResultados = new ArrayList<>(resultados);
+        
         if (resultados.isEmpty()) {
             vista.mostrarEstudiantes(new ArrayList<>()); // mostrará mensaje vacío
         } else if (resultados.size() == 1) {
@@ -123,7 +133,33 @@ public class EstudianteController {
             vista.mostrarEstudiantes(convertirAFilas(resultados));
         }
     }
+    
+    //Funcion del orden
+    public void ordenarPor(String criterio) {
+        if (ultimosResultados == null || ultimosResultados.isEmpty()) {
+            vista.mostrarError("No hay resultados mostrados para ordenar.");
+            return;
+        }
 
+        Comparator<Estudiante> comparador;
+
+        if ("Nombre".equalsIgnoreCase(criterio)) {
+            comparador = Comparator.comparing(Estudiante::getNombre, String.CASE_INSENSITIVE_ORDER);
+        } else if ("Promedio".equalsIgnoreCase(criterio)) {
+            comparador = Comparator.comparingDouble(Estudiante::getPromedio);
+        } else {
+            return;
+        }
+
+        if (!ascendente) {
+            comparador = comparador.reversed();
+        }
+
+        Collections.sort(ultimosResultados, comparador);
+        ascendente = !ascendente; // Cambia el sentido para el próximo clic
+
+        vista.mostrarEstudiantes(convertirAFilas(ultimosResultados));
+    }
     // ── Traducción Modelo → datos para la Vista ───────────────────────────────
     // Estos métodos son el "puente" que evita que la Vista dependa de Estudiante.
 
@@ -151,5 +187,4 @@ public class EstudianteController {
         return filas;
     }
 
-   
 }
