@@ -37,6 +37,9 @@ public class EstudianteView extends JFrame {
     private JComboBox<String>       criterio;
     private JButton                 btnOrdenar;
     
+    //Boton de mostrar
+    private JButton btnMostrarTodos;    
+    
     // ── Controlador ───────────────────────────────────────────────────────────
     private EstudianteController controlador;
 
@@ -67,9 +70,14 @@ public class EstudianteView extends JFrame {
         btnBuscar.setForeground(Color.WHITE);
         btnBuscar.setFocusPainted(false);
 
+        btnMostrarTodos = new JButton("Mostrar todos");
+        btnBuscar.setBackground(new Color(44, 227, 230));
+        btnBuscar.setForeground(Color.WHITE);
+                        
         panelBusqueda.add(lblNombre);
         panelBusqueda.add(txtNombre);
         panelBusqueda.add(btnBuscar);
+        panelBusqueda.add(btnMostrarTodos);
         
         //Mi Interfaz (agregar)  
         JPanel panelAgregar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -169,6 +177,12 @@ public class EstudianteView extends JFrame {
                 controlador.ordenarPor(criterioSeleccionado);
             }
         });
+        
+        btnMostrarTodos.addActionListener((ActionEvent e) ->{
+            if (controlador != null) {
+                controlador.mostrarTodos();
+            }
+        });
 
         //Mi Interfaz
         txtNombre1.addActionListener((ActionEvent e1) -> btnAgregar.doClick());
@@ -184,6 +198,10 @@ public class EstudianteView extends JFrame {
         txtPromedio.setText("");
     }
     
+    //Limpiar a la hora de mostrar
+    public void limpiarCampoBusqueda() {
+        txtNombre.setText("");
+    }
     // ── Métodos públicos que llama el Controlador ─────────────────────────────
     // ninguno de estos métodos recibe un Estudiante: reciben
     // Object[] / List<Object[]> ya armados, que es lo único que la Vista
