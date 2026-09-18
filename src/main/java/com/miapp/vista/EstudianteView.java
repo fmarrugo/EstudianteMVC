@@ -66,8 +66,40 @@ public class EstudianteView extends JFrame {
         panelBusqueda.add(lblNombre);
         panelBusqueda.add(txtNombre);
         panelBusqueda.add(btnBuscar);
-
-        // Panel central — tabla de resultados
+        
+        //Mi Interfaz   
+        JPanel panelAgregar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        panelAgregar.setBorder(BorderFactory.createTitledBorder("Agregar estudiante"));
+        
+        JLabel lblNombre1 = new JLabel("Nombre:");
+        txtNombre1 = new JTextField(10);
+        JLabel lblCarrera = new JLabel ("Carrera:");
+        txtCarrera = new JTextField(10);
+        JLabel lblPromedio = new JLabel("Promedio:");
+        txtPromedio = new JTextField(5);
+              
+        btnAgregar = new JButton("Agregar");
+        btnAgregar.setBackground(new Color(44, 227, 230));
+        btnAgregar.setForeground(Color.WHITE);
+        btnAgregar.setFocusPainted(false);
+        
+        panelAgregar.add(lblNombre1); 
+        panelAgregar.add(txtNombre1);
+        panelAgregar.add(lblCarrera);
+        panelAgregar.add(txtCarrera);
+        panelAgregar.add(lblPromedio);
+        panelAgregar.add(txtPromedio);
+        panelAgregar.add(btnAgregar);
+        
+        // Panel central — tabla de resultados //Modificado
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+        panelBusqueda.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelAgregar.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        panelPrincipal.add(panelBusqueda);
+        panelPrincipal.add(panelAgregar);
+        
         String[] columnas = {"ID", "Nombre", "Carrera", "Promedio"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
@@ -86,15 +118,9 @@ public class EstudianteView extends JFrame {
         lblEstado.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
         lblEstado.setForeground(Color.GRAY);
 
-        add(panelBusqueda, BorderLayout.NORTH);
+        add(panelPrincipal, BorderLayout.NORTH);
         add(scroll,        BorderLayout.CENTER);
         add(lblEstado,     BorderLayout.SOUTH);
-        
-        //Mi Interfaz        
-        btnAgregar = new JButton("Agregar");
-        btnAgregar.setBackground(new Color(59, 139, 212));
-        btnAgregar.setForeground(Color.WHITE);
-        btnAgregar.setFocusPainted(false);
     }
 
     // ── Eventos ───────────────────────────────────────────────────────────────
